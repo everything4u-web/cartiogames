@@ -1,18 +1,232 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Cartio Play</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CARTIO Games</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+
+body{
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+  min-height:100vh;
+}
+
+/* HEADER */
+header{
+  text-align:center;
+  padding:20px;
+  font-size:28px;
+  font-weight:bold;
+}
+
+/* SEARCH */
+.search-box{
+  display:flex;
+  justify-content:center;
+  margin:10px;
+}
+
+.search-box input{
+  width:300px;
+  padding:10px;
+  border:none;
+  border-radius:20px;
+  outline:none;
+}
+
+/* FILTERS */
+.filters{
+  text-align:center;
+  margin:10px;
+}
+
+.filters button{
+  margin:5px;
+  padding:8px 15px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  background:#444;
+  color:#fff;
+}
+
+.filters button:hover{
+  background:#00c6ff;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+/* CARD */
+.card{
+  background:#1e1e2f;
+  border-radius:15px;
+  overflow:hidden;
+  transition:0.3s;
+  box-shadow:0 5px 15px rgba(0,0,0,0.5);
+}
+
+.card:hover{
+  transform:scale(1.05);
+}
+
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+
+.card h3{
+  padding:10px;
+}
+
+.card button{
+  margin:10px;
+  padding:8px 15px;
+  border:none;
+  border-radius:10px;
+  background:#00c6ff;
+  cursor:pointer;
+}
+
+/* GAME OVERLAY */
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:none;
+  flex-direction:column;
+}
+
+.overlay iframe{
+  flex:1;
+  border:none;
+}
+
+.close-btn{
+  padding:10px;
+  background:red;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+}
+
+</style>
 </head>
 
 <body>
 
-<h1 style="text-align:center;">🎮 Cartio Play</h1>
+<header>CARTIO Games 🎮</header>
 
-<div class="grid" id="games"></div>
+<div class="search-box">
+<input type="text" id="search" placeholder="Search games...">
+</div>
 
-<script src="data.js"></script>
-<script src="script.js"></script>
+<div class="filters">
+<button onclick="filterGames('all')">All</button>
+<button onclick="filterGames('action')">Action</button>
+<button onclick="filterGames('racing')">Racing</button>
+<button onclick="filterGames('puzzle')">Puzzle</button>
+</div>
+
+<div class="grid" id="gameGrid"></div>
+
+<!-- GAME PLAYER -->
+<div class="overlay" id="overlay">
+<button class="close-btn" onclick="closeGame()">Close</button>
+<iframe id="gameFrame"></iframe>
+</div>
+
+<script>
+const games = [
+{
+title:"2048",
+category:"puzzle",
+img:"https://play2048.co/favicon.ico",
+url:"https://play2048.co/"
+},
+{
+title:"Tetris",
+category:"puzzle",
+img:"https://tetris.com/favicon.ico",
+url:"https://tetris.com/play-tetris"
+},
+{
+title:"Snake",
+category:"action",
+img:"https://playsnake.org/favicon.ico",
+url:"https://playsnake.org/"
+},
+{
+title:"Flappy Bird",
+category:"action",
+img:"https://flappybird.io/favicon.ico",
+url:"https://flappybird.io/"
+},
+{
+title:"Pacman",
+category:"action",
+img:"https://pacman.live/favicon.ico",
+url:"https://pacman.live/"
+},
+{
+title:"Car Racing",
+category:"racing",
+img:"https://www.onlinegames.io/media/posts/456/responsive/Extreme-Car-Driving-Simulator-xs.jpg",
+url:"https://www.onlinegames.io/games/2021/unity/extreme-car-driving-simulator/index.html"
+}
+];
+
+const grid = document.getElementById("gameGrid");
+
+function displayGames(list){
+grid.innerHTML="";
+list.forEach(game=>{
+grid.innerHTML+=`
+<div class="card" data-category="${game.category}">
+<img src="${game.img}">
+<h3>${game.title}</h3>
+<button onclick="playGame('${game.url}')">Play</button>
+</div>`;
+});
+}
+
+displayGames(games);
+
+function playGame(url){
+document.getElementById("overlay").style.display="flex";
+document.getElementById("gameFrame").src=url;
+}
+
+function closeGame(){
+document.getElementById("overlay").style.display="none";
+document.getElementById("gameFrame").src="";
+}
+
+function filterGames(category){
+if(category==="all"){
+displayGames(games);
+}else{
+displayGames(games.filter(g=>g.category===category));
+}
+}
+
+document.getElementById("search").addEventListener("input",e=>{
+const value=e.target.value.toLowerCase();
+displayGames(games.filter(g=>g.title.toLowerCase().includes(value)));
+});
+</script>
 
 </body>
-</html>
+  </html>
