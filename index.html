@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus HTML5 Gaming Platform</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Custom Properties for Global Theme Management */
+        :root {
+            --bg-color-1: #0f172a;
+            --bg-color-2: #1e1b4b;
+            --bg-color-3: #111827;
+            --primary-accent: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        /* Base Resets and Typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Animated Gradient Background Implementation */
+        body {
+            background: linear-gradient(135deg, var(--bg-color-1), var(--bg-color-2), var(--bg-color-3), var(--bg-color-1));
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Semantic Header and Navigation Architecture */
+        header {
+            padding: 2rem 5%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+       .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+       .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Real-Time Search Bar Styling */
+       .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+       .search-container input {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 2rem;
+            border: 1px solid var(--card-border);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all var(--transition-speed);
+        }
+
+       .search-container input:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Dynamic Category Filter Buttons */
+       .category-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+       .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 0.6rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-speed);
+        }
+
+       .filter-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+       .filter-btn.active {
+            background: var(--primary-accent);
+            color: #fff;
+            border-color: var(--primary-accent);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Fluid CSS Grid Layout Engine */
+        main {
+            flex: 1;
+            padding: 3rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+       .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+            gap: 2rem;
+        }
+
+        /* Game Card Glassmorphism UI and Micro-Interactions */
+       .game-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1.2rem;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            display: flex;
+            flex-direction: column;
+        }
+
+       .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+       .card-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* Mathematical 16:9 Aspect Ratio */
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+       .card-image-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+       .game-card:hover.card-image-wrapper img {
+            transform: scale(1.08); /* Premium zoom physics */
+        }
+
+       .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+        }
+
+       .card-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+       .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+       .category-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.4);
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+        }
+
+       .play-btn {
+            background: var(--primary-accent);
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background var(--transition-speed);
+        }
+
+       .play-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Zero-Results Validation State */
+       .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        /* Full Screen Iframe Overlay Architecture */
+       .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+       .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+       .overlay-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem 2rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+
+       .close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 1.5rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed);
+        }
+
+       .close-btn:hover {
+            background: #ef4444;
+            transform: rotate(90deg);
+        }
+
+       .iframe-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+       .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Mobile Responsiveness for Header Layout */
+        @media (max-width: 768px) {
+           .header-top {
+                flex-direction: column;
+                gap: 1rem;
+            }
+           .search-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="logo">NEXUS PLAY</div>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search games...">
+            </div>
+        </div>
+        <div class="category-filters" id="filter-container">
+            </div>
+    </header>
+
+    <main>
+        <div class="game-grid" id="game-grid">
+            </div>
+    </main>
+
+    <div class="overlay" id="game-overlay">
+        <div class="overlay-header">
+            <button class="close-btn" id="close-btn" aria-label="Close Game">&times;</button>
+        </div>
+        <div class="iframe-container">
+            <iframe id="game-iframe" src="" allow="autoplay; fullscreen; gamepad; focus-without-user-activation; clipboard-read; clipboard-write"></iframe>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Core Database Array
+         * Utilizes verified UUIDs from GameDistribution for functional iframe integrations.
+         */
+        const gamesDatabase =;
+
+        // Global Application State Variables
+        let currentFilter = 'All';
+        let searchQuery = '';
+
+        // Cached DOM Element References for Performance
+        const gridContainer = document.getElementById('game-grid');
+        const filterContainer = document.getElementById('filter-container');
+        const searchInput = document.getElementById('search-input');
+        const overlay = document.getElementById('game-overlay');
+        const iframe = document.getElementById('game-iframe');
+        const closeBtn = document.getElementById('close-btn');
+
+        /**
+         * Initialization Protocol
+         * Executes primary rendering pipelines upon DOM load completion
+         */
+        function init() {
+            renderFilters();
+            renderGrid();
+            setupEventListeners();
+        }
+
+        /**
+         * Dynamic Filter Button Generation
+         * Extracts mathematically unique categories from the database structure
+         */
+        function renderFilters() {
+            // Utilize a Set object to extract unique string values
+            const categories =;
+            
+            filterContainer.innerHTML = categories.map(category => `
+                <button class="filter-btn ${category === currentFilter? 'active' : ''}" 
+                        data-category="${category}">
+                    ${category}
+                </button>
+            `).join('');
+        }
+
+        /**
+         * Core Grid Rendering Engine
+         * Evaluates state variables, filters the dataset, and repaints the DOM tree
+         */
+        function renderGrid() {
+            // High-performance functional array filtering
+            const filteredGames = gamesDatabase.filter(game => {
+                const matchesCategory = currentFilter === 'All' |
+
+| game.category === currentFilter;
+                const matchesSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            // Handle Null-Set Empty State
+            if (filteredGames.length === 0) {
+                gridContainer.innerHTML = `<div class="no-results">No games found matching your criteria.</div>`;
+                return;
+            }
+
+            // Construct HTML string and map valid data points
+            // Integrates a secure onerror fallback to a dynamic placeholder API
+            const gridHTML = filteredGames.map(game => `
+                <article class="game-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://img.gamedistribution.com/${game.id}-512x384.jpeg" 
+                             alt="${game.title} thumbnail" 
+                             loading="lazy"
+                             onerror="this.src='https://placehold.co/512x384/1e293b/3b82f6?text=${encodeURIComponent(game.title)}'">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${game.title}</h3>
+                        <div class="card-meta">
+                            <span class="category-tag">${game.category}</span>
+                            <button class="play-btn" onclick="launchGame('${game.id}')">Play Now</button>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+
+            // Execute a single reflow/repaint DOM operation
+            gridContainer.innerHTML = gridHTML;
+        }
+
+        /**
+         * Embedded Launch Execution Protocol
+         * Modifies iframe parameters, engages visual overlay, and prevents background scrolling
+         */
+        window.launchGame = function(uuid) {
+            // Construct secure URL with mandatory referrer telemetry for programmatic ad compliance
+            const targetUrl = `https://html5.gamedistribution.com/${uuid}/?gd_sdk_referrer_url=${encodeURIComponent(window.location.href)}`;
+            
+            iframe.src = targetUrl;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Lock background dimensional scroll
+        };
+
+        /**
+         * Event Listener Binding Network
+         * Centralized listener management for real-time inputs and dynamically injected DOM elements
+         */
+        function setupEventListeners() {
+            // Search Input Event Delegation
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderGrid();
+            });
+
+            // Event Delegation for Dynamically Generated Filter Buttons
+            filterContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    // Update internal state
+                    currentFilter = e.target.getAttribute('data-category');
+                    
+                    // Update visual UI state for active buttons
+                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    // Trigger DOM repaint
+                    renderGrid();
+                }
+            });
+
+            // Overlay Dismissal and Memory Management Logic
+            const closeOverlay = () => {
+                overlay.classList.remove('active');
+                document.body.style.overflow = ''; // Restore standard document scroll
+                
+                // Sever iframe src explicitly to terminate background audio and force garbage collection
+                setTimeout(() => { iframe.src = ''; }, 400); 
+            };
+
+            closeBtn.addEventListener('click', closeOverlay);
+            
+            // Facilitate overlay closure via the hardware Escape key for accessibility
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                    closeOverlay();
+                }
+            });
+        }
+
+        // Execute Boot Sequence
+        init();
+    </script>
+</body>
+  </html>
+  
